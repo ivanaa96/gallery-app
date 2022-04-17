@@ -1,6 +1,6 @@
 import HttpService from "./HttpService";
 
-class AuthService extends HttpService {
+class UserService extends HttpService {
 	async login(credentials) {
 		const { data } = await this.client.post("login", credentials);
 		const { token, user } = data;
@@ -34,4 +34,4 @@ class AuthService extends HttpService {
 	}
 }
 
-export default new AuthService();
+export default new UserService();
