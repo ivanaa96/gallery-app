@@ -33,7 +33,7 @@ function Layout() {
 	}
 
 	return (
-		<main className="container">
+		<div>
 			<Router>
 				<Navbar handleLogout={handleLogout} />
 				<Switch>
@@ -74,7 +74,7 @@ function Layout() {
 					</Route>
 				</Switch>
 			</Router>
-		</main>
+		</div>
 	);
 }
 

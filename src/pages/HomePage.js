@@ -1,9 +1,17 @@
 import React from "react";
+import Sidebar from "../components/Sidebar";
 
 function HomePage() {
+	const isLoggedIn = !!localStorage.getItem("token");
+
 	return (
-		<div>
-			<h1>Welcome to Gallery application</h1>
+		<div className="main">
+			<h1 className="title">Welcome to Gallery application</h1>
+			{isLoggedIn && (
+				<div>
+					<Sidebar />
+				</div>
+			)}
 		</div>
 	);
 }

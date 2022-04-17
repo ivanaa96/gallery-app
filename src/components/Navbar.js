@@ -6,53 +6,41 @@ function Navbar({ handleLogout }) {
 
 	return (
 		<div>
-			<nav className="navbar navbar-expand-lg navbar-light bg-light">
+			<nav className="navbar navbar-expand-lg">
 				<a className="navbar-brand" href="/">
-					Galleries
+					<Link
+						className="navbar-brand navbar-item font-weight-bold mt-3 mb-3 ml-4"
+						to="/"
+					>
+						Galleries
+					</Link>
 				</a>
-				<button
-					className="navbar-toggler"
-					type="button"
-					data-toggle="collapse"
-					data-target="#navbarNav"
-					aria-controls="navbarNav"
-					aria-expanded="false"
-					aria-label="Toggle navigation"
-				>
-					<span className="navbar-toggler-icon"></span>
-				</button>
-				<div className="collapse navbar-collapse" id="navbarNav">
-					<ul className="navbar-nav">
-						<li className="nav-item active nav-link">
-							{<Link to="/">Galleries</Link>}
-						</li>
-						{!isLoggedIn && (
-							<li className="nav-item active nav-link">
-								{<Link to="/login">Login</Link>}
-							</li>
-						)}
-						{!isLoggedIn && (
-							<li className="nav-item active nav-link">
-								{<Link to="/register">Register</Link>}
-							</li>
-						)}
-						{isLoggedIn && (
-							<li className="nav-item active nav-link">
-								{<Link to="/my-galleries">My galleries</Link>}
-							</li>
-						)}
-						{isLoggedIn && (
-							<li className="nav-item active nav-link">
-								{<Link to="/create">Create New Gallery</Link>}
-							</li>
-						)}
-						{isLoggedIn && (
-							<li className="nav-item active nav-link">
-								<button onClick={handleLogout}>Logout</button>
-							</li>
-						)}
-					</ul>
-				</div>
+				{!isLoggedIn && (
+					<Link className="navbar-item" to="/register">
+						Register
+					</Link>
+				)}
+
+				{!isLoggedIn && (
+					<Link className="navbar-item" to="/login">
+						Login
+					</Link>
+				)}
+				{isLoggedIn && (
+					<Link className="navbar-item" to="/my-galleries">
+						My Galleries
+					</Link>
+				)}
+				{isLoggedIn && (
+					<Link className="navbar-item" to="/create">
+						Create New Gallery
+					</Link>
+				)}
+				{isLoggedIn && (
+					<span className="logout-span btn" onClick={handleLogout}>
+						Logout
+					</span>
+				)}
 			</nav>
 		</div>
 	);

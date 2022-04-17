@@ -35,9 +35,9 @@ function Register({ onRegister }) {
 	};
 
 	return (
-		<div className="container">
+		<div>
 			<h2>Register:</h2>
-			<form className="form-group" onSubmit={handleSubmit}>
+			<form className="login-form" onSubmit={handleSubmit}>
 				<label className="col-form-label col-25" htmlFor="first_name">
 					First name:
 				</label>

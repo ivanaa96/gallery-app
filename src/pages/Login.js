@@ -3,7 +3,6 @@ import UserService from "../services/UserService";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/user/slice";
 import { useHistory } from "react-router-dom";
-import { Redirect } from "react-router-dom";
 
 function Login({ onLogin }) {
 	const [user, setUserData] = useState({
@@ -20,16 +19,16 @@ function Login({ onLogin }) {
 			const loggedUser = await UserService.login(user);
 			dispatch(setUser(loggedUser));
 			onLogin();
-			history.replace("/");
+			history.push("/");
 		} catch (error) {
 			alert(error.response.data.message);
 		}
 	};
 
 	return (
-		<div className="container">
+		<div>
 			<h2>Login</h2>
-			<form onSubmit={handleSubmit} className="form-group">
+			<form onSubmit={handleSubmit} className="login-form">
 				<label htmlFor="email" className="col-form-label col-25">
 					Email:
 				</label>
