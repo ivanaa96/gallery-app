@@ -1,10 +1,14 @@
 import React from "react";
 import { BrowserRouter as Router, Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { userSelector } from "../store/user/selectors";
+import { useDispatch } from "react-redux";
+import UserService from "../services/UserService";
 
 function Navbar() {
-	const isLoggedIn = useSelector(userSelector);
+	const isLoggedIn = !!localStorage.getItem("token");
+
+	async function handleLogout() {
+		await UserService.logout();
+	}
 
 	return (
 		<div>
@@ -28,12 +32,16 @@ function Navbar() {
 						<li className="nav-item active nav-link">
 							<Link to="/">Galleries</Link>
 						</li>
-						<li className="nav-item active nav-link">
-							<Link to="/login">Login</Link>
-						</li>
-						<li className="nav-item active nav-link">
-							<Link to="/register">Register</Link>
-						</li>
+						{!isLoggedIn && (
+							<li className="nav-item active nav-link">
+								<Link to="/login">Login</Link>
+							</li>
+						)}
+						{!isLoggedIn && (
+							<li className="nav-item active nav-link">
+								<Link to="/register">Register</Link>
+							</li>
+						)}
 						{isLoggedIn && (
 							<li className="nav-item active nav-link">
 								<Link to="/my-galleries">My galleries</Link>
@@ -46,7 +54,7 @@ function Navbar() {
 						)}
 						{isLoggedIn && (
 							<li className="nav-item active nav-link">
-								<button onClick>Logout</button>
+								<button onClick={handleLogout}>Logout</button>
 							</li>
 						)}
 					</ul>
