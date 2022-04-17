@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import UserService from "../services/UserService";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/user/slice";
+import { useHistory } from "react-router-dom";
 
 function Register() {
 	const [newUser, setNewUser] = useState({
@@ -14,11 +15,22 @@ function Register() {
 	});
 
 	const dispatch = useDispatch();
+	const history = useHistory();
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		const { data } = await UserService.register(newUser);
-		dispatch(setUser(data));
+		try {
+			const { data } = await UserService.register(newUser);
+			dispatch(setUser(data));
+			history.replace("/");
+		} catch (error) {
+			const errors = [];
+			Object.values(error.response.data.errors).map((error) =>
+				errors.push(error)
+			);
+			alert(errors.map((error) => error + "\n"));
+			return;
+		}
 	};
 
 	return (
@@ -82,6 +94,7 @@ function Register() {
 					name="password"
 					placeholder="Enter your password..."
 					required
+					minLength={8}
 					value={newUser.password}
 					onChange={({ target }) =>
 						setNewUser({ ...newUser, password: target.value })
@@ -114,6 +127,7 @@ function Register() {
 					name="terms_and_conditions"
 					className="col-form-label col-75"
 					value={1}
+					required
 					onChange={({ target }) =>
 						setNewUser({ ...newUser, terms_and_conditions: target.value })
 					}

@@ -3,6 +3,7 @@ import UserService from "../services/UserService";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/user/slice";
 import { useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 function Login() {
 	const [user, setUserData] = useState({
@@ -15,9 +16,13 @@ function Login() {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		const loggedUser = await UserService.login(user);
-		dispatch(setUser(loggedUser));
-		history.push("/posts");
+		try {
+			const loggedUser = await UserService.login(user);
+			dispatch(setUser(loggedUser));
+			history.replace("/");
+		} catch (error) {
+			alert(error.response.data.message);
+		}
 	};
 
 	return (
@@ -30,8 +35,9 @@ function Login() {
 				<br />
 				<input
 					className="form-control col-75"
-					type="email"
+					// type="email"
 					name="email"
+					required
 					placeholder="Enter your email address..."
 					value={user.email}
 					onChange={({ target }) =>
@@ -47,6 +53,7 @@ function Login() {
 					className="form-control col-75"
 					type="password"
 					name="password"
+					required
 					placeholder="Enter your password..."
 					value={user.password}
 					onChange={({ target }) =>
