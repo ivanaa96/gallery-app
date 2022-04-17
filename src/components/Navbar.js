@@ -1,7 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import UserService from "../services/UserService";
 
 function Navbar({ handleLogout }) {
 	const isLoggedIn = !!localStorage.getItem("token");

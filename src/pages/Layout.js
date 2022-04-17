@@ -6,7 +6,8 @@ import {
 	Route,
 	Redirect,
 } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { removeUser } from "../store/user/slice";
 import HomePage from "../pages/HomePage";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
@@ -23,9 +24,12 @@ function Layout() {
 		Boolean(localStorage.getItem("token"))
 	);
 
+	const dispatch = useDispatch();
+
 	async function handleLogout() {
 		await UserService.logout();
 		setIsAuthenticated(false);
+		dispatch(removeUser());
 	}
 
 	return (
