@@ -5,7 +5,7 @@ import { setUser } from "../store/user/slice";
 import { useHistory } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 
-function Login() {
+function Login({ onLogin }) {
 	const [user, setUserData] = useState({
 		email: "",
 		password: "",
@@ -19,6 +19,7 @@ function Login() {
 		try {
 			const loggedUser = await UserService.login(user);
 			dispatch(setUser(loggedUser));
+			onLogin();
 			history.replace("/");
 		} catch (error) {
 			alert(error.response.data.message);
@@ -35,7 +36,7 @@ function Login() {
 				<br />
 				<input
 					className="form-control col-75"
-					// type="email"
+					type="email"
 					name="email"
 					required
 					placeholder="Enter your email address..."

@@ -3,12 +3,8 @@ import { BrowserRouter as Router, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import UserService from "../services/UserService";
 
-function Navbar() {
+function Navbar({ handleLogout }) {
 	const isLoggedIn = !!localStorage.getItem("token");
-
-	async function handleLogout() {
-		await UserService.logout();
-	}
 
 	return (
 		<div>
@@ -30,26 +26,26 @@ function Navbar() {
 				<div className="collapse navbar-collapse" id="navbarNav">
 					<ul className="navbar-nav">
 						<li className="nav-item active nav-link">
-							<Link to="/">Galleries</Link>
+							{<Link to="/">Galleries</Link>}
 						</li>
 						{!isLoggedIn && (
 							<li className="nav-item active nav-link">
-								<Link to="/login">Login</Link>
+								{<Link to="/login">Login</Link>}
 							</li>
 						)}
 						{!isLoggedIn && (
 							<li className="nav-item active nav-link">
-								<Link to="/register">Register</Link>
+								{<Link to="/register">Register</Link>}
 							</li>
 						)}
 						{isLoggedIn && (
 							<li className="nav-item active nav-link">
-								<Link to="/my-galleries">My galleries</Link>
+								{<Link to="/my-galleries">My galleries</Link>}
 							</li>
 						)}
 						{isLoggedIn && (
 							<li className="nav-item active nav-link">
-								<Link to="/create">Create New Gallery</Link>
+								{<Link to="/create">Create New Gallery</Link>}
 							</li>
 						)}
 						{isLoggedIn && (

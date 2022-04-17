@@ -11,7 +11,10 @@ class UserService extends HttpService {
 
 	async register(newUser) {
 		const { data } = await this.client.post("register", newUser);
-		return data;
+		const { token, user } = data;
+		localStorage.setItem("token", token);
+
+		return user;
 	}
 
 	async logout() {

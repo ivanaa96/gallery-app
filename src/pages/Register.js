@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../store/user/slice";
 import { useHistory } from "react-router-dom";
 
-function Register() {
+function Register({ onRegister }) {
 	const [newUser, setNewUser] = useState({
 		first_name: "",
 		last_name: "",
@@ -22,7 +22,8 @@ function Register() {
 		try {
 			const { data } = await UserService.register(newUser);
 			dispatch(setUser(data));
-			history.replace("/");
+			onRegister();
+			history.push("/");
 		} catch (error) {
 			const errors = [];
 			Object.values(error.response.data.errors).map((error) =>
@@ -136,7 +137,7 @@ function Register() {
 					htmlFor="terms_and_conditions"
 					className="col-form-label col-25 custom"
 				>
-					I agree to terms and conditions.
+					I accept terms and conditions.
 				</label>
 
 				<br />
