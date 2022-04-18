@@ -1,28 +1,28 @@
 import HttpService from "./HttpService";
 
 class UserService extends HttpService {
-	async login(credentials) {
+	login = async (credentials) => {
 		const { data } = await this.client.post("login", credentials);
-		const { token, user } = data;
+		const { token } = data;
 
 		localStorage.setItem("token", token);
-		return user;
-	}
+		return data;
+	};
 
-	async register(newUser) {
+	register = async (newUser) => {
 		const { data } = await this.client.post("register", newUser);
 		const { token, user } = data;
 		localStorage.setItem("token", token);
 
-		return user;
-	}
+		return data;
+	};
 
-	async logout() {
+	logout = async () => {
 		await this.client.post("logout");
 		localStorage.removeItem("token");
-	}
+	};
 
-	async handleToken() {
+	handleToken = async () => {
 		let token = localStorage.getItem("token");
 		let decodedToken = atob(token.split(".")[1]);
 		// console.log("Decoded Token", decodedToken);
@@ -34,7 +34,7 @@ class UserService extends HttpService {
 		} else {
 			console.log("Valid token");
 		}
-	}
+	};
 }
 
 export default new UserService();
