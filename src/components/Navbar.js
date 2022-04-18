@@ -1,9 +1,26 @@
 import React from "react";
 import { BrowserRouter as Router, Link } from "react-router-dom";
+import { isAuthenticated } from "../store/user/selectors";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../store/user/slice";
+import { useHistory } from "react-router-dom";
 
-function Navbar({ handleLogout }) {
-	const isLoggedIn = !!localStorage.getItem("token");
+function Navbar() {
+	const isUserAuthenticated = useSelector(isAuthenticated);
+	const dispatch = useDispatch();
+	const history = useHistory();
 
+	async function handleLogout() {
+		dispatch(
+			logout({
+				meta: {
+					onSuccess: () => {
+						history.replace("/login");
+					},
+				},
+			})
+		);
+	}
 	return (
 		<div>
 			<nav className="navbar navbar-color navbar-expand-lg">
@@ -13,33 +30,33 @@ function Navbar({ handleLogout }) {
 				>
 					Galleries
 				</Link>
-				{isLoggedIn && (
+				{isUserAuthenticated && (
 					<Link className="navbar-item" to="/">
 						All Galleries
 					</Link>
 				)}
-				{!isLoggedIn && (
+				{!isUserAuthenticated && (
 					<Link className="navbar-item" to="/register">
 						Register
 					</Link>
 				)}
 
-				{!isLoggedIn && (
+				{!isUserAuthenticated && (
 					<Link className="navbar-item" to="/login">
 						Login
 					</Link>
 				)}
-				{isLoggedIn && (
+				{isUserAuthenticated && (
 					<Link className="navbar-item" to="/my-galleries">
 						My Galleries
 					</Link>
 				)}
-				{isLoggedIn && (
+				{isUserAuthenticated && (
 					<Link className="navbar-item" to="/create">
 						Create New Gallery
 					</Link>
 				)}
-				{isLoggedIn && (
+				{isUserAuthenticated && (
 					<span className="logout-span btn" onClick={handleLogout}>
 						Logout
 					</span>
