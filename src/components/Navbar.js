@@ -6,15 +6,18 @@ function Navbar({ handleLogout }) {
 
 	return (
 		<div>
-			<nav className="navbar navbar-expand-lg">
-				<a className="navbar-brand" href="/">
-					<Link
-						className="navbar-brand navbar-item font-weight-bold mt-3 mb-3 ml-4"
-						to="/"
-					>
-						Galleries
+			<nav className="navbar navbar-color navbar-expand-lg">
+				<Link
+					className="navbar-brand navbar-item font-weight-bold mt-3 mb-3 ml-4"
+					to="/"
+				>
+					Galleries
+				</Link>
+				{isLoggedIn && (
+					<Link className="navbar-item" to="/">
+						All Galleries
 					</Link>
-				</a>
+				)}
 				{!isLoggedIn && (
 					<Link className="navbar-item" to="/register">
 						Register
