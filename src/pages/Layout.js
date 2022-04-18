@@ -6,8 +6,6 @@ import {
 	Route,
 	Redirect,
 } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { removeUser } from "../store/user/slice";
 import HomePage from "../pages/HomePage";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
@@ -17,40 +15,19 @@ import MyGalleries from "../pages/Gallery/MyGalleries";
 import AuthorsGalleriesPage from "../pages/Gallery/AuthorsGalleriesPage";
 import ViewGalleryPage from "../pages/Gallery/ViewGalleryPage";
 import CreateNewGalleryPage from "../pages/Gallery/CreateNewGalleryPage";
-import UserService from "../services/UserService";
 
 function Layout() {
-	const [isAuthenticated, setIsAuthenticated] = useState(
-		Boolean(localStorage.getItem("token"))
-	);
-
-	const dispatch = useDispatch();
-
-	async function handleLogout() {
-		await UserService.logout();
-		setIsAuthenticated(false);
-		dispatch(removeUser());
-	}
-
 	return (
 		<div>
 			<Router>
-				<Navbar handleLogout={handleLogout} />
+				<Navbar />
 				<Switch>
 					<GuestRoute path="/login">
-						<Login
-							onLogin={() => {
-								setIsAuthenticated(true);
-							}}
-						/>
+						<Login />
 					</GuestRoute>
 
 					<GuestRoute path="/register">
-						<Register
-							onRegister={() => {
-								setIsAuthenticated(true);
-							}}
-						/>
+						<Register />
 					</GuestRoute>
 
 					<PrivateRoute path="/my-galleries">
