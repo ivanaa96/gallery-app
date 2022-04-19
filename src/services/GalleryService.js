@@ -9,7 +9,8 @@ class GalleryService extends HttpService {
 				"Access-Control-Allow-Origin": true,
 			},
 		});
-		return data;
+		const realData = data.data;
+		return realData;
 	};
 
 	getGalleries = async () => {
