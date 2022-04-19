@@ -3,7 +3,7 @@ export const selectSearch = (state) => state.gallery.search;
 export const selectGalleryPage = (state) => state.gallery.pageNo;
 
 export const hasNextPage = (state) =>
-	state.gallery.pageNo * 10 < state.gallery.galleries.length;
+	state.gallery.pageNo * 5 < state.gallery.galleries.length;
 
 export const selectCreateGalleryErrors = (state) =>
 	state.gallery.createGalleryErrors;

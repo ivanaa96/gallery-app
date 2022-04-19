@@ -10,7 +10,7 @@ export const gallerySlice = createSlice({
 	initialState: {
 		galleries: [],
 		search: "",
-		pageNo: 1,
+		pageNo: 0,
 		sortBy: null,
 		createGalleryErrors: [],
 	},

@@ -1,33 +1,27 @@
 import React, { useEffect } from "react";
 import { getGalleries } from "../store/gallery/slice";
 import { useDispatch, useSelector } from "react-redux";
-import { selectGalleriesDesc } from "../store/gallery/selectors";
+import {
+	selectGalleriesDesc,
+	selectAllGalleries,
+} from "../store/gallery/selectors";
 import GalleryRow from "../components/GalleryRow";
 
 function DisplayAllGalleries() {
 	const dispatch = useDispatch();
-	const galleries = useSelector(selectGalleriesDesc);
+	const galleries = useSelector(selectAllGalleries);
 
 	useEffect(() => {
 		dispatch(getGalleries());
 	}, []);
+
 	return (
 		<div>
 			<div className="list-group">
-				{galleries && galleries.length ? (
+				{galleries?.length ? (
 					<ul>
-						{galleries.map((gallery) => (
-							<div key={gallery.id}>
-								<p>{gallery.title}</p>
-								{/* <GalleryRow
-									key={gallery.id}
-									id={gallery.id}
-									user={gallery.user}
-									title={gallery.title}
-									description={gallery.description}
-									created={gallery.created_at}
-								/> */}
-							</div>
+						{galleries.map((g) => (
+							<GalleryRow key={g.id} gallery={g} />
 						))}
 					</ul>
 				) : (

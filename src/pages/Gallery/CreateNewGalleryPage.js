@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import GalleryService from "../../services/GalleryService";
 import { useDispatch, useSelector } from "react-redux";
+import { selectCreateGalleryErrors } from "../../store/gallery/selectors";
+import CreateGalleryError from "../../components/CreateGalleryError";
+import {
+	createGallery,
+	setCreateGalleryErrors,
+} from "../../store/gallery/slice";
 
 function CreateNewGalleryPage() {
 	const [newGallery, setNewGallery] = useState({
@@ -11,40 +16,39 @@ function CreateNewGalleryPage() {
 
 	const { id } = useParams();
 	const history = useHistory();
+	const dispatch = useDispatch();
+	const errors = useSelector(selectCreateGalleryErrors);
 
-	const [urlInput, setUrlInput] = useState([{ url: "" }]);
+	const [urlList, setUrlList] = useState([{ url: "" }]);
 
-	const handleChange = (i, e) => {
-		let newUrlInputFields = [...urlInput];
-		newUrlInputFields[i][e.target.name] = e.target.value;
-		setUrlInput(newUrlInputFields);
+	const handleAddInputField = () => {
+		setUrlList([...urlList, { url: "" }]);
 	};
 
-	const addFormFields = () => {
-		setUrlInput([...urlInput, { url: "" }]);
+	const handleUrlChange = (i, e) => {
+		const list = [...urlList];
+		list[i][e.target.name] = e.target.value;
+		setUrlList(list);
 	};
 
-	const removeFormFields = (i) => {
-		let newUrlInputFields = [...urlInput];
-		newUrlInputFields.splice(i, 1);
-		setUrlInput(newUrlInputFields);
+	const removeInputField = (index) => {
+		const list = [...urlList];
+		list.splice(index, 1);
+		setUrlList(list);
 	};
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		let data = null;
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+		dispatch(
+			createGallery({
+				...newGallery,
+				image_urls: urlList,
+			})
+		);
+		console.log(newGallery);
+		console.log(urlList);
 
-		if (id) {
-			data = await GalleryService.edit(id, newGallery);
-		} else {
-			data = await GalleryService.store(newGallery);
-		}
-
-		if (!data) {
-			alert("New gallery was not created successfully!");
-			return;
-		}
-		history.push("/");
+		dispatch(setCreateGalleryErrors());
 	};
 
 	return (
@@ -82,38 +86,46 @@ function CreateNewGalleryPage() {
 						setNewGallery({ ...newGallery, description: target.value })
 					}
 				/>
+				<label htmlFor="url" className="col-form-label col-25">
+					Url of images:
+				</label>
 
-				{urlInput.map((element, index) => (
+				{urlList.map((urlElement, index) => (
 					<div key={index}>
-						<label htmlFor="url" className="col-form-label col-25">
-							Url of images:
-						</label>
 						<input
 							type="text"
 							placeholder="Enter the url of images..."
 							className="form-control col-75"
 							name="url"
-							value={element.url}
-							onChange={(e) => handleChange(index, e)}
+							value={urlElement.url}
+							onChange={(e) => handleUrlChange(index, e)}
 						/>
-						{index ? (
+						{urlList.length - 1 === index && (
 							<button
 								type="button"
 								className="btn"
-								onClick={() => removeFormFields(index)}
+								onClick={handleAddInputField}
+							>
+								Add new url
+							</button>
+						)}
+						{urlList.length > 1 && (
+							<button
+								type="button"
+								className="btn"
+								onClick={() => removeInputField(index)}
 							>
 								Remove URL
 							</button>
-						) : null}
+						)}
 					</div>
 				))}
-				<button className="btn" type="button" onClick={() => addFormFields()}>
-					Add more URLs...
-				</button>
+
 				<button className="gallery-form-button">
 					{id ? "Edit" : "Submit"}
 				</button>
 			</form>
+			{errors && <CreateGalleryError error={errors} />}
 		</div>
 	);
 }
