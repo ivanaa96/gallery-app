@@ -1,17 +1,15 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 
-function GalleryRow({ gallery }) {
+function GalleryRow({ id, title, user, created }) {
 	return (
-		<div>
-			<a href={`/galleries/${gallery.id}`}>
-				<h4 className="list-group-item">{gallery.title}</h4>
-			</a>
+		<div className="list-group-item">
+			<h5>
+				<a href={id}>{title}</a>
+			</h5>
 			<h6>
-				<a href="authors/${author.id}">{gallery.user}</a>
+				<a href={user.id}>{user}</a>
 			</h6>
-			<h6>Created: {gallery.created_at}</h6>
-			{/* <Link to=View gallery</Link> */}
+			<h6>Created: {created}</h6>
 		</div>
 	);
 }
