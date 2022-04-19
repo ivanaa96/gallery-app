@@ -19,7 +19,6 @@ export const userSlice = createSlice({
 	reducers: {
 		setToken(state, action) {
 			state.token = action.payload;
-			state.isAuthenticated = true;
 		},
 		removeUser(state) {
 			state.user = {};
