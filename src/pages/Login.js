@@ -1,29 +1,45 @@
-import React, { useState } from "react";
-import UserService from "../services/UserService";
-import { useDispatch } from "react-redux";
-import { setUser } from "../store/user/slice";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { login, setErrors } from "../store/user/slice";
 import { useHistory } from "react-router-dom";
+import {
+	selectErrors,
+	isAuthenticated as selectIsAuthenticated,
+} from "../store/user/selectors";
+import LoginErrors from "../components/LoginErrors";
 
-function Login({ onLogin }) {
+function Login() {
 	const [user, setUserData] = useState({
 		email: "",
 		password: "",
 	});
 
+	const errors = useSelector(selectErrors);
+	const isAuthenticated = useSelector(selectIsAuthenticated);
 	const dispatch = useDispatch();
 	const history = useHistory();
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		try {
-			const loggedUser = await UserService.login(user);
-			dispatch(setUser(loggedUser));
-			onLogin();
-			history.push("/");
-		} catch (error) {
-			alert(error.response.data.message);
-		}
+		dispatch(setErrors());
+		dispatch(
+			login({
+				credentials: user,
+				meta: {
+					onSuccess: () => {
+						history.replace("/");
+					},
+				},
+			})
+		);
 	};
+
+	// useEffect(() => {
+	// 	console.log("is authenticated changed");
+	// 	if (isAuthenticated) {
+	// 		history.replace("/");
+	// 	}
+	// }, [isAuthenticated]);
 
 	return (
 		<div>
@@ -62,6 +78,7 @@ function Login({ onLogin }) {
 				/>
 				<button className="my-button">Login</button>
 			</form>
+			{errors && <LoginErrors error={errors} />}
 		</div>
 	);
 }

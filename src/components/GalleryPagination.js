@@ -14,15 +14,15 @@ function GalleryPagination() {
 			<nav>
 				<ul className="pagination pagination-sm justify-content-center">
 					<button
-						className="page-item page-link"
+						className="page-item page-link button-pagination"
 						disabled={pageNo < 1}
 						onClick={() => dispatch(changePage(-1))}
 					>
 						&laquo;
 					</button>
-					<p className="page-item page-link">{pageNo}</p>
+					<p className="button-pagination page-item page-link">{pageNo}</p>
 					<button
-						className="page-item page-link"
+						className="page-item page-link button-pagination"
 						disabled={!hasNext}
 						onClick={() => dispatch(changePage(1))}
 					>

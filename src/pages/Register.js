@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import UserService from "../services/UserService";
-import { useDispatch } from "react-redux";
-import { setUser } from "../store/user/slice";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { register, setRegisterErrors } from "../store/user/slice";
+import { selectRegisterErrors } from "../store/user/selectors";
+import RegisterErrors from "../components/RegisterErrors";
 
-function Register({ onRegister }) {
+function Register() {
 	const [newUser, setNewUser] = useState({
 		first_name: "",
 		last_name: "",
@@ -16,22 +17,21 @@ function Register({ onRegister }) {
 
 	const dispatch = useDispatch();
 	const history = useHistory();
+	const errors = useSelector(selectRegisterErrors);
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		try {
-			const { data } = await UserService.register(newUser);
-			dispatch(setUser(data));
-			onRegister();
-			history.push("/");
-		} catch (error) {
-			const errors = [];
-			Object.values(error.response.data.errors).map((error) =>
-				errors.push(error)
-			);
-			alert(errors.map((error) => error + "\n"));
-			return;
-		}
+		dispatch(setRegisterErrors());
+		dispatch(
+			register({
+				registerUser: newUser,
+				meta: {
+					onSuccess: () => {
+						history.replace("/");
+					},
+				},
+			})
+		);
 	};
 
 	return (
@@ -143,6 +143,7 @@ function Register({ onRegister }) {
 				<br />
 				<button className="my-button">Register</button>
 			</form>
+			{errors && <RegisterErrors error={errors} />}
 		</div>
 	);
 }
