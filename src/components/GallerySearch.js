@@ -1,38 +1,45 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import {
-	searchValueSelector,
-	galleriesSelector,
-} from "../store/gallery/selectors";
-import { setSearchValue } from "../store/gallery/slice";
-
+import { addSearch } from "../store/gallery/slice";
+import { selectSearch, selectAllGalleries } from "../store/gallery/selectors";
 function GallerySearch() {
 	const dispatch = useDispatch();
-	const value = useSelector(searchValueSelector);
-	const galleries = useSelector(galleriesSelector);
+	const search = useSelector(selectSearch);
+	const galleries = useSelector(selectAllGalleries);
+
+	const filteredGalleries =
+		search &&
+		galleries.filter((gallery) =>
+			gallery.title.toLowerCase().includes(search.toLowerCase())
+		);
 
 	return (
 		<div className="sidebar">
 			<h5>Search for gallery</h5>
+
 			<input
 				className="input-sidebar"
 				type="text"
 				placeholder="Search.."
-				value={value}
 				onChange={(e) => {
-					dispatch(setSearchValue(e.target.value));
+					dispatch(addSearch(e.target.value));
 				}}
 			/>
 			<div>
 				<button className="btn btn-sidebar">Filter</button>
 			</div>
 
-			<div>
-				{galleries.length
-					? galleries.map((gallery) => <Link to={gallery.id} />)
-					: value && <p className="result-input">No results for "{value}" </p>}
-			</div>
+			{filteredGalleries.length
+				? filteredGalleries.map((gallery) => (
+						<div key={gallery.id} className="sidebar-results">
+							<li>
+								<a href={gallery.id}>{gallery.title}</a>
+							</li>
+						</div>
+				  ))
+				: search && (
+						<span className="sidebar-results">There is not such gallery!</span>
+				  )}
 		</div>
 	);
 }
