@@ -1,15 +1,12 @@
 import React, { useEffect } from "react";
 import { getGalleries } from "../store/gallery/slice";
 import { useDispatch, useSelector } from "react-redux";
-import {
-	selectGalleriesDesc,
-	selectAllGalleries,
-} from "../store/gallery/selectors";
+import { selectGalleriesDesc } from "../store/gallery/selectors";
 import GalleryRow from "../components/GalleryRow";
 
 function DisplayAllGalleries() {
 	const dispatch = useDispatch();
-	const galleries = useSelector(selectAllGalleries);
+	const galleries = useSelector(selectGalleriesDesc);
 
 	useEffect(() => {
 		dispatch(getGalleries());
@@ -17,7 +14,7 @@ function DisplayAllGalleries() {
 
 	return (
 		<div>
-			<div className="list-group">
+			<div className="justify-content-sm-evenly">
 				{galleries?.length ? (
 					<ul>
 						{galleries.map((g) => (
