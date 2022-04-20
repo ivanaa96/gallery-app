@@ -43,10 +43,15 @@ function CreateNewGalleryPage() {
 			createGallery({
 				...newGallery,
 				image_urls: urlList,
+				meta: {
+					onSuccess: () => {
+						history.replace("/");
+					},
+				},
 			})
 		);
-		console.log(newGallery);
-		console.log(urlList);
+		// console.log(newGallery);
+		// console.log(urlList);
 
 		dispatch(setCreateGalleryErrors());
 	};

@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { getGalleries } from "../store/gallery/slice";
 import { useDispatch, useSelector } from "react-redux";
-import { selectGalleriesDesc } from "../store/gallery/selectors";
+import { selectAllGalleries } from "../store/gallery/selectors";
 import GalleryRow from "../components/GalleryRow";
 
 function DisplayAllGalleries() {
 	const dispatch = useDispatch();
-	const galleries = useSelector(selectGalleriesDesc);
+	const galleries = useSelector(selectAllGalleries);
 
 	useEffect(() => {
 		dispatch(getGalleries());

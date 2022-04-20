@@ -132,9 +132,21 @@
 	font-weight: bold;
 }
 
+.gallery-row-title {
+	font-size: 30px;
+}
+
+.gallery-row-author {
+	font-size: 20px;
+}
+
 .navbar-color {
 	background-color: #9e93b4;
 	height: 60px;
+}
+
+.gallery-row-margin {
+	margin: 50px;
 }
 
 .gallery-form-button {
