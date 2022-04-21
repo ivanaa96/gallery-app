@@ -1,17 +1,20 @@
 import React, { useState } from "react";
-import CommentService from "../services/CommentService";
-import { useSelector, useDispatch } from "react-redux";
-import { selectGalleryById, selectComments } from "../store/gallery/selectors";
-import { getComments } from "../store/gallery/slice";
+import { useDispatch, useSelector } from "react-redux";
+import { createComments } from "../store/gallery/slice";
+import { selectCommentErrors } from "../store/gallery/selectors";
+import CommentErrors from "../components/CommentErrors";
+import { setCommentError } from "../store/gallery/slice";
 
 function AddComment({ galleryId }) {
 	const [newComment, setNewComment] = useState({ body: "" });
-	const gallery = useSelector(selectGalleryById);
 	const dispatch = useDispatch();
+
+	const errors = useSelector(selectCommentErrors);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		dispatch(getComments({ comment: newComment, id: galleryId }));
+		dispatch(createComments({ comment: newComment, id: galleryId }));
+		dispatch(setCommentError());
 		setNewComment({ body: "" });
 	};
 
@@ -31,6 +34,7 @@ function AddComment({ galleryId }) {
 				/>
 				<button className="my-button">Add</button>
 			</form>
+			{errors && <CommentErrors error={errors} />}
 		</div>
 	);
 }

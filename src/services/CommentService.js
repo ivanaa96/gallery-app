@@ -9,8 +9,12 @@ class CommentService extends HttpService {
 		);
 		return data;
 	};
+
+	delete = async (content) => {
+		const { data } = await this.client.delete(
+			`/galleries/${content.gallery}/comments/${content.comment}`
+		);
+		return content.comment;
+	};
 }
 export default new CommentService();
-
-//komentari 500 i prikaz jedne gaalerije: autor i fotografije
-//gallerySearch ostaje rezultate pretrage kada se vratim na homepage
