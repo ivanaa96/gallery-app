@@ -6,6 +6,7 @@ import CreateGalleryError from "../../components/CreateGalleryError";
 import {
 	createGallery,
 	setCreateGalleryErrors,
+	updateGalleryMethod,
 } from "../../store/gallery/slice";
 
 function CreateNewGalleryPage() {
@@ -46,6 +47,28 @@ function CreateNewGalleryPage() {
 				meta: {
 					onSuccess: () => {
 						history.replace("/");
+					},
+				},
+			})
+		);
+
+		dispatch(setCreateGalleryErrors());
+	};
+
+	const handleEdit = async (event) => {
+		event.preventDefault();
+		dispatch(
+			updateGalleryMethod({
+				galleryData: {
+					...newGallery,
+					image_urls: urlList,
+					gallery_id: id,
+				},
+				ifSuccessful: {
+					meta: {
+						onSuccess: () => {
+							history.replace(`/galleries/${id}`);
+						},
 					},
 				},
 			})
@@ -127,10 +150,13 @@ function CreateNewGalleryPage() {
 						)}
 					</div>
 				))}
+				{id && (
+					<button onClick={handleEdit} className="gallery-form-button">
+						edit
+					</button>
+				)}
 
-				<button className="gallery-form-button">
-					{id ? "Edit" : "Submit"}
-				</button>
+				<button className="gallery-form-button">Submit</button>
 				<br />
 				<button
 					onClick={handleRedirectToHomepage}

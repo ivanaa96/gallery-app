@@ -46,6 +46,10 @@ function Layout() {
 						<CreateNewGalleryPage />
 					</PrivateRoute>
 
+					<PrivateRoute path="/edit-gallery/:id">
+						<CreateNewGalleryPage />
+					</PrivateRoute>
+
 					<Route exact path="/">
 						<HomePage />
 					</Route>

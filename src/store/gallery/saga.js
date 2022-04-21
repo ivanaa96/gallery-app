@@ -20,6 +20,7 @@ import {
 	setCommentError,
 	deleteGalleryMethod,
 	deleteGallery,
+	updateGalleryMethod,
 } from "./slice";
 
 function* handleCreateGallery(action) {
@@ -37,9 +38,9 @@ function* handleCreateGallery(action) {
 	}
 }
 
-function* getGalleriesHandler() {
+function* getGalleriesHandler({ payload }) {
 	try {
-		const data = yield call(GalleryService.getAll);
+		const data = yield call(GalleryService.getAll, payload); // ova metoda u servisu treba da prima filter, pa ako on postoji, da ga ubaci u q param
 		yield put(setGalleries(data));
 	} catch (error) {
 		console.log(error);
@@ -112,6 +113,28 @@ function* deleteGalleryHandler(action) {
 	}
 }
 
+function* updateGalleryHandler(action) {
+	try {
+		console.log(action.payload);
+		const data = yield call(GalleryService.edit, action.payload.galleryData);
+		console.log("vratili su se podaci u handler");
+		if (
+			action.payload.ifSuccessful.meta &&
+			action.payload.ifSuccessful.meta.onSuccess
+		) {
+			yield call(action.payload.ifSuccessful.meta.onSuccess);
+		}
+	} catch (error) {
+		// console.log(error.response.data.errors);
+		const errors = [];
+		Object.values(error.response.data.errors).map((error) =>
+			errors.push(error)
+		);
+		// console.log(errors);
+		yield put(setCreateGalleryErrors(errors));
+	}
+}
+
 export function* watchForSaga() {
 	yield takeLatest(createGallery.type, handleCreateGallery);
 	yield takeLatest(getGalleries.type, getGalleriesHandler);
@@ -121,4 +144,5 @@ export function* watchForSaga() {
 	yield takeLatest(getAuthorsGalleries.type, getAuthorsGalleriesHandler);
 	yield takeLatest(deleteComment.type, deleteCommentHandler);
 	yield takeLatest(deleteGalleryMethod.type, deleteGalleryHandler);
+	yield takeLatest(updateGalleryMethod.type, updateGalleryHandler);
 }

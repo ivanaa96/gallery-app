@@ -9,6 +9,7 @@ const MiddlewareAction = {
 	getAuthorsGalleries: () => {},
 	deleteComment: () => {},
 	deleteGalleryMethod: () => {},
+	updateGalleryMethod: () => {},
 };
 
 export const gallerySlice = createSlice({
@@ -53,7 +54,9 @@ export const gallerySlice = createSlice({
 			state.AuthorsGalleries = action.payload;
 		},
 		deleteCommentFromGallery: (state, action) => {
-			state.gallery.comments.filter((comment) => comment.id !== action.payload);
+			state.gallery.comments = state.gallery.comments.filter(
+				(comment) => comment.id !== action.payload
+			);
 		},
 		setCommentError: (state, action) => {
 			state.commentErrors = action.payload;
@@ -86,6 +89,7 @@ export const {
 	setCommentError,
 	deleteGalleryMethod,
 	deleteGallery,
+	updateGalleryMethod,
 } = gallerySlice.actions;
 
 export default gallerySlice.reducer;

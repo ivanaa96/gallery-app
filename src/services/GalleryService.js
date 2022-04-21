@@ -1,7 +1,7 @@
 import HttpService from "./HttpService";
 
 class GalleryService extends HttpService {
-	getAll = async () => {
+	getAll = async (payload) => {
 		const token = localStorage.getItem("token");
 		const { data } = await this.client.get("/", {
 			headers: {
@@ -23,8 +23,11 @@ class GalleryService extends HttpService {
 		return data;
 	};
 
-	edit = async (id, gallery) => {
-		const { data } = await this.client.put(`/galleries/${id}`, gallery);
+	edit = async (gallery) => {
+		const { data } = await this.client.put(
+			`/edit-gallery/${gallery.gallery_id}`,
+			gallery
+		);
 		return data;
 	};
 
