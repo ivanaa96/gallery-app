@@ -5,6 +5,7 @@ import { getMyGalleries } from "../../store/gallery/slice";
 import { Link } from "react-router-dom";
 import GallerySearch from "../../components/GallerySearch";
 import GalleryPagination from "../../components/GalleryPagination";
+import GalleryRow from "../../components/GalleryRow";
 
 function MyGalleries() {
 	const dispatch = useDispatch();
@@ -25,23 +26,7 @@ function MyGalleries() {
 			{myGalleries.galleries?.length && (
 				<ul>
 					{galleries.map((g) => (
-						<div key={g.id}>
-							<Link
-								to={`/galleries/${g.id}`}
-								className="title gallery-row-title"
-							>
-								{g.title}
-							</Link>
-
-							<p className="">Created: {g.created_at}</p>
-							{g.images[0] && (
-								<div>
-									<div className="justify-content-sm-evenly gallery-row-image">
-										<img src={g.images[0].url} width="400px"></img>
-									</div>
-								</div>
-							)}
-						</div>
+						<GalleryRow key={g.id} gallery={g} />
 					))}
 				</ul>
 			)}
