@@ -20,13 +20,16 @@ function GalleryRow({ gallery }) {
 					</Link>
 
 					<br />
-
-					<Link
-						to={`/authors/${gallery.user.id}`}
-						className="title gallery-row-author"
-					>
-						Author: {gallery.user.first_name} {gallery.user.last_name}
-					</Link>
+					{gallery.user && (
+						<div>
+							<Link
+								to={`/authors/${gallery.user.id}`}
+								className="title gallery-row-author"
+							>
+								Author: {gallery.user.first_name} {gallery.user.last_name}
+							</Link>
+						</div>
+					)}
 
 					<h6>Created: {formattedDate}</h6>
 					{gallery.images[0] && (
