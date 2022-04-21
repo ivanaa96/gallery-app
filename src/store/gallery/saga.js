@@ -18,6 +18,8 @@ import {
 	deleteCommentFromGallery,
 	deleteComment,
 	setCommentError,
+	deleteGalleryMethod,
+	deleteGallery,
 } from "./slice";
 
 function* handleCreateGallery(action) {
@@ -95,6 +97,21 @@ function* deleteCommentHandler(action) {
 	}
 }
 
+function* deleteGalleryHandler(action) {
+	const response = prompt(
+		"Are you sure you want to delete this gallery ?\n Enter 'Yes' if you are"
+	);
+
+	if (response === "Yes") {
+		try {
+			const data = yield call(GalleryService.delete, action.payload);
+			yield put(deleteGallery());
+		} catch (error) {
+			console.log(error);
+		}
+	}
+}
+
 export function* watchForSaga() {
 	yield takeLatest(createGallery.type, handleCreateGallery);
 	yield takeLatest(getGalleries.type, getGalleriesHandler);
@@ -103,4 +120,5 @@ export function* watchForSaga() {
 	yield takeLatest(getMyGalleries.type, getMyGalleriesHandler);
 	yield takeLatest(getAuthorsGalleries.type, getAuthorsGalleriesHandler);
 	yield takeLatest(deleteComment.type, deleteCommentHandler);
+	yield takeLatest(deleteGalleryMethod.type, deleteGalleryHandler);
 }

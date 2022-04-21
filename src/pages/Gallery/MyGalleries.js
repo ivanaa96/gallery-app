@@ -34,10 +34,13 @@ function MyGalleries() {
 							</Link>
 
 							<p className="">Created: {g.created_at}</p>
-
-							<div className="justify-content-sm-evenly gallery-row-image">
-								<img src={g.images[0].url} width="400px"></img>
-							</div>
+							{g.images[0] && (
+								<div>
+									<div className="justify-content-sm-evenly gallery-row-image">
+										<img src={g.images[0].url} width="400px"></img>
+									</div>
+								</div>
+							)}
 						</div>
 					))}
 				</ul>

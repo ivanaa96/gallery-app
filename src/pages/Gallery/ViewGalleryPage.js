@@ -3,15 +3,21 @@ import { useParams } from "react-router-dom";
 import AddComment from "../../components/AddComment";
 import useFormattedDate from "../../hooks/useFormattedDate";
 import { Link } from "react-router-dom";
-import { getGallery, deleteComment } from "../../store/gallery/slice";
+import {
+	getGallery,
+	deleteComment,
+	deleteGalleryMethod,
+} from "../../store/gallery/slice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectGalleryById } from "../../store/gallery/selectors";
 import { isAuthenticated } from "../../store/user/selectors";
+import { useHistory } from "react-router-dom";
 
 function ViewGalleryPage() {
 	const dispatch = useDispatch();
 	const { id } = useParams();
 	const isUserAuthenticated = useSelector(isAuthenticated);
+	const history = useHistory();
 
 	const gallery = useSelector(selectGalleryById);
 	// console.log("gallery selektor se promijenio", { gallery });
@@ -24,6 +30,11 @@ function ViewGalleryPage() {
 	useEffect(() => {
 		dispatch(getGallery(id));
 	}, [id]);
+
+	const handleDeleteGallery = (galleryId) => {
+		dispatch(deleteGalleryMethod(galleryId));
+		history.push("/my-galleries");
+	};
 
 	return (
 		<div className="main">
@@ -110,6 +121,15 @@ function ViewGalleryPage() {
 					{isUserAuthenticated && <AddComment galleryId={gallery.id} />}
 				</div>
 			)}
+			<hr />
+			<button
+				className="btn"
+				onClick={() => {
+					handleDeleteGallery(gallery.id);
+				}}
+			>
+				Delete gallery
+			</button>
 		</div>
 	);
 }

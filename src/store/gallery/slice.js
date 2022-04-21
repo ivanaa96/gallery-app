@@ -8,6 +8,7 @@ const MiddlewareAction = {
 	getMyGalleries: () => {},
 	getAuthorsGalleries: () => {},
 	deleteComment: () => {},
+	deleteGalleryMethod: () => {},
 };
 
 export const gallerySlice = createSlice({
@@ -57,6 +58,9 @@ export const gallerySlice = createSlice({
 		setCommentError: (state, action) => {
 			state.commentErrors = action.payload;
 		},
+		deleteGallery: (state) => {
+			state.gallery = {};
+		},
 		...MiddlewareAction,
 	},
 });
@@ -80,6 +84,8 @@ export const {
 	deleteComment,
 	deleteCommentFromGallery,
 	setCommentError,
+	deleteGalleryMethod,
+	deleteGallery,
 } = gallerySlice.actions;
 
 export default gallerySlice.reducer;
