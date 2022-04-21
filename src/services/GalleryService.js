@@ -13,11 +13,6 @@ class GalleryService extends HttpService {
 		return realData;
 	};
 
-	getGalleries = async () => {
-		const { data } = await this.client.get("/my-galleries");
-		return data;
-	};
-
 	get = async (id) => {
 		const { data } = await this.client.get(`/galleries/${id}`);
 		return data;
@@ -35,6 +30,16 @@ class GalleryService extends HttpService {
 
 	delete = async (id) => {
 		const { data } = await this.client.delete(`/galleries/${id}`);
+		return data;
+	};
+
+	getMyGalleries = async () => {
+		const { data } = await this.client.get("/my-galleries");
+		return data;
+	};
+
+	getAuthorsGalleries = async (id) => {
+		const { data } = await this.client.get(`/authors/${id}`);
 		return data;
 	};
 }
