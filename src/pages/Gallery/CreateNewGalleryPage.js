@@ -50,10 +50,12 @@ function CreateNewGalleryPage() {
 				},
 			})
 		);
-		// console.log(newGallery);
-		// console.log(urlList);
 
 		dispatch(setCreateGalleryErrors());
+	};
+
+	const handleRedirectToHomepage = () => {
+		history.push("/my-galleries");
 	};
 
 	return (
@@ -128,6 +130,13 @@ function CreateNewGalleryPage() {
 
 				<button className="gallery-form-button">
 					{id ? "Edit" : "Submit"}
+				</button>
+				<br />
+				<button
+					onClick={handleRedirectToHomepage}
+					className="gallery-form-button"
+				>
+					Cancel
 				</button>
 			</form>
 			{errors && <CreateGalleryError error={errors} />}

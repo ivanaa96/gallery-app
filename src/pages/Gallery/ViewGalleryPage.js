@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import AddComment from "../../components/AddComment";
 import useFormattedDate from "../../hooks/useFormattedDate";
 import { Link } from "react-router-dom";
-import { getGallery } from "../../store/gallery/slice";
+import { getGallery, deleteComment } from "../../store/gallery/slice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectGalleryById } from "../../store/gallery/selectors";
+import { isAuthenticated } from "../../store/user/selectors";
 
 function ViewGalleryPage() {
 	const dispatch = useDispatch();
 	const { id } = useParams();
+	const isUserAuthenticated = useSelector(isAuthenticated);
 
 	const gallery = useSelector(selectGalleryById);
-	console.log("gallery selektor se promijenio", { gallery });
+	// console.log("gallery selektor se promijenio", { gallery });
 
 	const formattedDate = useFormattedDate(
 		gallery ? gallery.created_at : "",
@@ -39,31 +41,73 @@ function ViewGalleryPage() {
 						</Link>
 					)}
 					<div
-						id="carouselExampleSlidesOnly"
+						id="carouselExampleControls"
 						className="carousel slide"
 						data-ride="carousel"
 					>
 						<div className="carousel-inner">
-							{gallery.images &&
-								gallery.images.map((image, i) => (
-									<img key={image.id} src={image.url} />
-								))}
+							<div className="carousel-item active">
+								{gallery.images &&
+									gallery.images.map((image, i) => (
+										<div key={image.id} className="carousel-image">
+											<a href={image.url}>
+												<img
+													src={image.url}
+													alt={image.title}
+													className="d-block w-100"
+												/>
+											</a>
+										</div>
+									))}
+							</div>
 						</div>
 					</div>
-
-					<div className="list-group">
+					<hr />
+					<div>
 						<h4>Comments:</h4>
-						{gallery.comments && gallery.comments.length ? (
-							<ul>
+						{gallery.comments?.length ? (
+							<div>
 								{gallery.comments.map((comment) => (
-									<li key={comment.id}>{comment.body}</li>
+									<div key={comment.id} className="login-form ">
+										{comment?.user && (
+											<div>
+												<p>Comment by: </p>
+												<i className="result-input">
+													{comment.user.first_name} {comment.user.last_name}
+												</i>
+											</div>
+										)}
+										<p className="result-input">
+											{" "}
+											Created at: {comment.created_at}
+										</p>
+										<strong>
+											<p>{comment.body}</p>
+										</strong>
+										{isUserAuthenticated && (
+											<button
+												onClick={() =>
+													dispatch(
+														deleteComment({
+															comment: comment.id,
+															gallery: gallery.id,
+														})
+													)
+												}
+												className="btn"
+											>
+												Delete comment
+											</button>
+										)}
+									</div>
 								))}
-							</ul>
+								<hr />
+							</div>
 						) : (
 							<p>No comments</p>
 						)}
 					</div>
-					<AddComment galleryId={gallery.id} />
+					{isUserAuthenticated && <AddComment galleryId={gallery.id} />}
 				</div>
 			)}
 		</div>
