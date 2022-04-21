@@ -5,9 +5,7 @@ function GuestRoute({ children, ...props }) {
 	const token = localStorage.getItem("token");
 	const isGuest = !token;
 
-	return (
-		<Route {...props}>{isGuest ? children : <Redirect to="/posts" />}</Route>
-	);
+	return <Route {...props}>{isGuest ? children : <Redirect to="/" />}</Route>;
 }
 
 export default GuestRoute;
