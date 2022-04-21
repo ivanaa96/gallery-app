@@ -164,3 +164,11 @@
 .button-pagination {
 	height: 25px;
 }
+
+.edit-button {
+	position: absolute;
+	top: 3;
+	font-size: 16px;
+	font-weight: bold;
+	right: 0;
+}

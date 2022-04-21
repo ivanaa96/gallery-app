@@ -1,22 +1,16 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import AddComment from "../../components/AddComment";
 import useFormattedDate from "../../hooks/useFormattedDate";
 import { Link } from "react-router-dom";
-import {
-	getGallery,
-	deleteComment,
-	deleteGalleryMethod,
-} from "../../store/gallery/slice";
+import { getGallery, deleteGalleryMethod } from "../../store/gallery/slice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectGalleryById } from "../../store/gallery/selectors";
-import { isAuthenticated } from "../../store/user/selectors";
 import { useHistory } from "react-router-dom";
+import DisplayAllComments from "../../components/DisplayAllComments";
 
 function ViewGalleryPage() {
 	const dispatch = useDispatch();
 	const { id } = useParams();
-	const isUserAuthenticated = useSelector(isAuthenticated);
 	const history = useHistory();
 
 	const gallery = useSelector(selectGalleryById);
@@ -41,6 +35,7 @@ function ViewGalleryPage() {
 			{gallery && (
 				<div>
 					<h2 className="title">{gallery.title}</h2>
+					{/* <button onClick={()=>  } className="edit-button btn">Edit</button> */}
 					<p className="">Created: {formattedDate}</p>
 					<p className="justify-content-center">{gallery.description}</p>
 					{gallery.user && (
@@ -74,51 +69,7 @@ function ViewGalleryPage() {
 						</div>
 					</div>
 					<hr />
-					<div>
-						<h4>Comments:</h4>
-						{gallery.comments?.length ? (
-							<div>
-								{gallery.comments.map((comment) => (
-									<div key={comment.id} className="login-form ">
-										{comment?.user && (
-											<div>
-												<p>Comment by: </p>
-												<i className="result-input">
-													{comment.user.first_name} {comment.user.last_name}
-												</i>
-											</div>
-										)}
-										<p className="result-input">
-											{" "}
-											Created at: {comment.created_at}
-										</p>
-										<strong>
-											<p>{comment.body}</p>
-										</strong>
-										{isUserAuthenticated && (
-											<button
-												onClick={() =>
-													dispatch(
-														deleteComment({
-															comment: comment.id,
-															gallery: gallery.id,
-														})
-													)
-												}
-												className="btn"
-											>
-												Delete comment
-											</button>
-										)}
-									</div>
-								))}
-								<hr />
-							</div>
-						) : (
-							<p>No comments</p>
-						)}
-					</div>
-					{isUserAuthenticated && <AddComment galleryId={gallery.id} />}
+					<DisplayAllComments gallery={gallery} />
 				</div>
 			)}
 			<hr />
