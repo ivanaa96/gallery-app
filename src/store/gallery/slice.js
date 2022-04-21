@@ -4,7 +4,10 @@ const MiddlewareAction = {
 	getGalleries: () => {},
 	createGallery: () => {},
 	getGallery: () => {},
-	getComments: () => {},
+	createComments: () => {},
+	getMyGalleries: () => {},
+	getAuthorsGalleries: () => {},
+	deleteComment: () => {},
 };
 
 export const gallerySlice = createSlice({
@@ -16,7 +19,9 @@ export const gallerySlice = createSlice({
 		sortBy: null,
 		createGalleryErrors: [],
 		gallery: {},
-		comments: [],
+		myGalleries: [],
+		AuthorsGalleries: [],
+		commentErrors: "",
 	},
 	reducers: {
 		setGalleries(state, { payload }) {
@@ -38,9 +43,19 @@ export const gallerySlice = createSlice({
 			state.gallery = action.payload;
 		},
 		addComment: (state, action) => {
-			console.log("dodajem komentar", { state, action });
-			console.log(state.comments);
 			state.gallery.comments.push(action.payload);
+		},
+		setMyGalleries: (state, action) => {
+			state.myGalleries = action.payload;
+		},
+		setAuthorsGalleries: (state, action) => {
+			state.AuthorsGalleries = action.payload;
+		},
+		deleteCommentFromGallery: (state, action) => {
+			state.gallery.comments.filter((comment) => comment.id !== action.payload);
+		},
+		setCommentError: (state, action) => {
+			state.commentErrors = action.payload;
 		},
 		...MiddlewareAction,
 	},
@@ -56,7 +71,15 @@ export const {
 	setSort,
 	getGallery,
 	setGallery,
-	getComments,
+	createComments,
 	addComment,
+	getMyGalleries,
+	setMyGalleries,
+	setAuthorsGalleries,
+	getAuthorsGalleries,
+	deleteComment,
+	deleteCommentFromGallery,
+	setCommentError,
 } = gallerySlice.actions;
+
 export default gallerySlice.reducer;

@@ -10,7 +10,14 @@ import {
 	getGallery,
 	setGallery,
 	addComment,
-	getComments,
+	createComments,
+	setMyGalleries,
+	getMyGalleries,
+	setAuthorsGalleries,
+	getAuthorsGalleries,
+	deleteCommentFromGallery,
+	deleteComment,
+	setCommentError,
 } from "./slice";
 
 function* handleCreateGallery(action) {
@@ -48,12 +55,43 @@ function* getGalleryByIdHandler(action) {
 
 function* createCommentHandler(action) {
 	try {
-		console.log(action.payload);
 		const data = yield call(CommentService.store, action.payload);
-		console.log("dodaj komentar", { data });
 		yield put(addComment(data));
 	} catch (error) {
+		yield put(setCommentError(error.response.data.message));
+	}
+}
+
+function* getMyGalleriesHandler() {
+	try {
+		const data = yield call(GalleryService.getMyGalleries);
+		yield put(setMyGalleries(data));
+	} catch (error) {
 		console.log(error);
+	}
+}
+
+function* getAuthorsGalleriesHandler(action) {
+	try {
+		const data = yield call(GalleryService.getAuthorsGalleries, action.payload);
+		yield put(setAuthorsGalleries(data));
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+function* deleteCommentHandler(action) {
+	const response = prompt(
+		"Are you sure you want to delete this comment ?\n Enter 'Yes' if you are"
+	);
+
+	if (response === "Yes") {
+		try {
+			const data = yield call(CommentService.delete, action.payload);
+			yield put(deleteCommentFromGallery(data));
+		} catch (error) {
+			console.log(error);
+		}
 	}
 }
 
@@ -61,5 +99,8 @@ export function* watchForSaga() {
 	yield takeLatest(createGallery.type, handleCreateGallery);
 	yield takeLatest(getGalleries.type, getGalleriesHandler);
 	yield takeLatest(getGallery.type, getGalleryByIdHandler);
-	yield takeLatest(getComments.type, createCommentHandler);
+	yield takeLatest(createComments.type, createCommentHandler);
+	yield takeLatest(getMyGalleries.type, getMyGalleriesHandler);
+	yield takeLatest(getAuthorsGalleries.type, getAuthorsGalleriesHandler);
+	yield takeLatest(deleteComment.type, deleteCommentHandler);
 }
