@@ -1,12 +1,12 @@
 import React from "react";
-import { isAuthenticated } from "../store/user/selectors";
+import { isAuthenticated, userSelector } from "../store/user/selectors";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteComment } from "../store/gallery/slice";
-import useFormattedDate from "../hooks/useFormattedDate";
 import AddComment from "../components/AddComment";
 
 function DisplayAllComments({ gallery }) {
 	const isUserAuthenticated = useSelector(isAuthenticated);
+	const activeUser = useSelector(userSelector);
 	const dispatch = useDispatch();
 
 	return (
@@ -37,7 +37,7 @@ function DisplayAllComments({ gallery }) {
 									<strong>
 										<p>{comment.body}</p>
 									</strong>
-									{isUserAuthenticated && (
+									{isUserAuthenticated && activeUser.id === comment.user_id && (
 										<button
 											onClick={() =>
 												dispatch(

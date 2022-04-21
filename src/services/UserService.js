@@ -22,6 +22,11 @@ class UserService extends HttpService {
 		localStorage.removeItem("token");
 	};
 
+	getMyProfile = async () => {
+		const { data } = await this.client.get("/my-profile");
+		return data;
+	};
+
 	handleToken = async () => {
 		let token = localStorage.getItem("token");
 		let decodedToken = atob(token.split(".")[1]);

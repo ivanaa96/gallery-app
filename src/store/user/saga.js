@@ -8,6 +8,8 @@ import {
 	logout,
 	removeUser,
 	setRegisterErrors,
+	getActiveUser,
+	setActiveUser,
 } from "./slice";
 
 function* handleLogin(action) {
@@ -52,8 +54,18 @@ function* handleLogout({ payload }) {
 	}
 }
 
+function* getActiveUserHandler() {
+	try {
+		const data = yield call(UserService.getMyProfile);
+		yield put(setActiveUser(data));
+	} catch (error) {
+		console.log(error);
+	}
+}
+
 export function* watchForSagas() {
 	yield takeLatest(login.type, handleLogin);
 	yield takeLatest(register.type, handleRegister);
 	yield takeLatest(logout.type, handleLogout);
+	yield takeLatest(getActiveUser.type, getActiveUserHandler);
 }

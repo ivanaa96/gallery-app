@@ -7,12 +7,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectGalleryById } from "../../store/gallery/selectors";
 import { useHistory } from "react-router-dom";
 import DisplayAllComments from "../../components/DisplayAllComments";
+import { userSelector, isAuthenticated } from "../../store/user/selectors";
 
 function ViewGalleryPage() {
 	const dispatch = useDispatch();
 	const { id } = useParams();
 	const history = useHistory();
-
+	const isUserAuthenticated = useSelector(isAuthenticated);
+	const activeUser = useSelector(userSelector);
 	const gallery = useSelector(selectGalleryById);
 	// console.log("gallery selektor se promijenio", { gallery });
 
@@ -30,12 +32,24 @@ function ViewGalleryPage() {
 		history.push("/my-galleries");
 	};
 
+	const handleRedirectToEdit = (galleryId) => {
+		history.push(`/edit-gallery/${galleryId}`);
+	};
+
 	return (
 		<div className="main">
 			{gallery && (
 				<div>
 					<h2 className="title">{gallery.title}</h2>
-					{/* <button onClick={()=>  } className="edit-button btn">Edit</button> */}
+					{isUserAuthenticated && activeUser.id === gallery.user_id && (
+						<button
+							onClick={() => handleRedirectToEdit(gallery.id)}
+							className="edit-button btn"
+						>
+							Edit
+						</button>
+					)}
+
 					<p className="">Created: {formattedDate}</p>
 					<p className="justify-content-center">{gallery.description}</p>
 					{gallery.user && (
@@ -73,14 +87,16 @@ function ViewGalleryPage() {
 				</div>
 			)}
 			<hr />
-			<button
-				className="btn"
-				onClick={() => {
-					handleDeleteGallery(gallery.id);
-				}}
-			>
-				Delete gallery
-			</button>
+			{isUserAuthenticated && activeUser.id === gallery.user_id && (
+				<button
+					className="btn"
+					onClick={() => {
+						handleDeleteGallery(gallery.id);
+					}}
+				>
+					Delete gallery
+				</button>
+			)}
 		</div>
 	);
 }

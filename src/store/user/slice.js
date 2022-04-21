@@ -4,6 +4,7 @@ const MiddlewareActions = {
 	login: () => {},
 	register: () => {},
 	logout: () => {},
+	getActiveUser: () => {},
 };
 
 const token = localStorage.getItem("token");
@@ -29,6 +30,9 @@ export const userSlice = createSlice({
 		setRegisterErrors(state, { payload }) {
 			state.registerErrors = payload;
 		},
+		setActiveUser(state, action) {
+			state.user = action.payload;
+		},
 		...MiddlewareActions,
 	},
 });
@@ -41,5 +45,7 @@ export const {
 	register,
 	logout,
 	setRegisterErrors,
+	getActiveUser,
+	setActiveUser,
 } = userSlice.actions;
 export default userSlice.reducer;
