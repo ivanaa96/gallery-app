@@ -23,17 +23,22 @@ function MyGalleries() {
 			</div>
 			{myGalleries.title && <h2 className="title">MyGalleries</h2>}
 			{myGalleries.galleries?.length ? (
-				<ul>
-					{galleries.map((g) => (
-						<GalleryRow key={g.id} gallery={g} />
-					))}
-				</ul>
+				<div>
+					<ul>
+						{galleries.map((g) => (
+							<GalleryRow key={g.id} gallery={g} />
+						))}
+					</ul>
+					<div>
+						<GalleryPagination />
+					</div>
+				</div>
 			) : (
-				<p> You haven't created any gallery yet.</p>
+				<p className="info alert alert-danger alert-danger">
+					{" "}
+					You haven't created any gallery yet.
+				</p>
 			)}
-			<div>
-				<GalleryPagination />
-			</div>
 		</div>
 	);
 }

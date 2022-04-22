@@ -172,3 +172,8 @@
 	font-weight: bold;
 	right: 0;
 }
+
+.info {
+	margin: 150px 0 0 150px;
+	width: 70%;
+}
