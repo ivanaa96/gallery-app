@@ -16,7 +16,6 @@ function ViewGalleryPage() {
 	const isUserAuthenticated = useSelector(isAuthenticated);
 	const activeUser = useSelector(userSelector);
 	const gallery = useSelector(selectGalleryById);
-	// console.log("gallery selektor se promijenio", { gallery });
 
 	const formattedDate = useFormattedDate(
 		gallery ? gallery.created_at : "",
@@ -38,17 +37,19 @@ function ViewGalleryPage() {
 
 	return (
 		<div className="main">
-			{gallery && (
+			{gallery && activeUser && (
 				<div>
 					<h2 className="title">{gallery.title}</h2>
-					{isUserAuthenticated && activeUser.id === gallery.user_id && (
-						<button
-							onClick={() => handleRedirectToEdit(gallery.id)}
-							className="edit-button btn"
-						>
-							Edit
-						</button>
-					)}
+					{isUserAuthenticated &&
+						activeUser &&
+						activeUser.id === gallery.user_id && (
+							<button
+								onClick={() => handleRedirectToEdit(gallery.id)}
+								className="edit-button btn"
+							>
+								Edit
+							</button>
+						)}
 
 					<p className="">Created: {formattedDate}</p>
 					<p className="justify-content-center">{gallery.description}</p>
