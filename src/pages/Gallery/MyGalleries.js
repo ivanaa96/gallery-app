@@ -22,12 +22,14 @@ function MyGalleries() {
 				<GallerySearch />
 			</div>
 			{myGalleries.title && <h2 className="title">MyGalleries</h2>}
-			{myGalleries.galleries?.length && (
+			{myGalleries.galleries?.length ? (
 				<ul>
 					{galleries.map((g) => (
 						<GalleryRow key={g.id} gallery={g} />
 					))}
 				</ul>
+			) : (
+				<p> You haven't created any gallery yet.</p>
 			)}
 			<div>
 				<GalleryPagination />
