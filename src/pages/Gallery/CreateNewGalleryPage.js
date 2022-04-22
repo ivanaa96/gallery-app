@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCreateGalleryErrors } from "../../store/gallery/selectors";
@@ -8,6 +8,7 @@ import {
 	setCreateGalleryErrors,
 	updateGalleryMethod,
 } from "../../store/gallery/slice";
+import GalleryService from "../../services/GalleryService";
 
 function CreateNewGalleryPage() {
 	const [newGallery, setNewGallery] = useState({
@@ -77,31 +78,43 @@ function CreateNewGalleryPage() {
 		dispatch(setCreateGalleryErrors());
 	};
 
+	useEffect(() => {
+		const getGallery = async () => {
+			const { id: _, ...restData } = await GalleryService.get(id);
+			setNewGallery({ ...restData });
+			setUrlList([...restData.images]);
+		};
+
+		if (id) {
+			getGallery();
+		}
+	}, [id]);
+
 	const handleRedirectToHomepage = () => {
 		history.push("/my-galleries");
 	};
 
-	const reorderList = (event, originalUrlList) => {
-		const movedItem = originalUrlList.find(
+	const reorderUrlList = (event, originalUrlList) => {
+		const movedUrl = originalUrlList.find(
 			(item, index) => index === event.oldIndex
 		);
-		const remainingItems = originalUrlList.filter(
+		const remainingUrls = originalUrlList.filter(
 			(item, index) => index !== event.oldIndex
 		);
 
 		const reorderedItems = [
-			...remainingItems.slice(0, event.newIndex),
-			movedItem,
-			...remainingItems.slice(event.newIndex),
+			...remainingUrls.slice(0, event.newIndex),
+			movedUrl,
+			...remainingUrls.slice(event.newIndex),
 		];
 
 		return reorderedItems;
 	};
 
-	function changeOrder(index, direction) {
+	function changeOrder(index, position) {
 		setUrlList(
-			reorderList(
-				{ oldIndex: index, newIndex: index + (direction === "UP" ? -1 : 1) },
+			reorderUrlList(
+				{ oldIndex: index, newIndex: index + (position === "UP" ? -1 : 1) },
 				urlList
 			)
 		);
