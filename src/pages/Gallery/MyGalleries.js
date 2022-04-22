@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectMyGalleries } from "../../store/gallery/selectors";
 import { getMyGalleries } from "../../store/gallery/slice";
-import { Link } from "react-router-dom";
 import GallerySearch from "../../components/GallerySearch";
 import GalleryPagination from "../../components/GalleryPagination";
 import GalleryRow from "../../components/GalleryRow";
