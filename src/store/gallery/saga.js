@@ -21,6 +21,7 @@ import {
 	deleteGalleryMethod,
 	deleteGallery,
 	updateGalleryMethod,
+	setLinks,
 } from "./slice";
 
 function* handleCreateGallery(action) {
@@ -41,7 +42,8 @@ function* handleCreateGallery(action) {
 function* getGalleriesHandler({ payload }) {
 	try {
 		const data = yield call(GalleryService.getAll, payload); // ova metoda u servisu treba da prima filter, pa ako on postoji, da ga ubaci u q param
-		yield put(setGalleries(data));
+		yield put(setGalleries(data.data));
+		yield put(setLinks(data.links));
 	} catch (error) {
 		console.log(error);
 	}
@@ -105,7 +107,7 @@ function* deleteGalleryHandler(action) {
 
 	if (response === "Yes") {
 		try {
-			const data = yield call(GalleryService.delete, action.payload);
+			yield call(GalleryService.delete, action.payload);
 			yield put(deleteGallery());
 		} catch (error) {
 			console.log(error);
@@ -117,7 +119,6 @@ function* updateGalleryHandler(action) {
 	try {
 		console.log(action.payload);
 		const data = yield call(GalleryService.edit, action.payload.galleryData);
-		console.log("vratili su se podaci u handler");
 		if (
 			action.payload.ifSuccessful.meta &&
 			action.payload.ifSuccessful.meta.onSuccess
@@ -125,12 +126,10 @@ function* updateGalleryHandler(action) {
 			yield call(action.payload.ifSuccessful.meta.onSuccess);
 		}
 	} catch (error) {
-		// console.log(error.response.data.errors);
 		const errors = [];
 		Object.values(error.response.data.errors).map((error) =>
 			errors.push(error)
 		);
-		// console.log(errors);
 		yield put(setCreateGalleryErrors(errors));
 	}
 }

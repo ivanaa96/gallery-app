@@ -1,35 +1,44 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { selectGalleryPage, hasNextPage } from "../store/gallery/selectors";
-import { changePage } from "../store/gallery/slice";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { selectLinksForPagination } from "../store/gallery/selectors";
+import GalleryRow from "./GalleryRow";
 
 function GalleryPagination() {
-	const dispatch = useDispatch();
+	const links = useSelector(selectLinksForPagination);
+	const [galleries, setGalleries] = useState([]);
 
-	const pageNo = useSelector(selectGalleryPage);
-	const hasNext = useSelector(hasNextPage);
+	async function loadMoreItems() {
+		// const test = links[2].url;
+		let num = 1;
+		num++;
+		const link = `http://localhost:8000/api?page=${num}`;
+
+		fetch(link)
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error(`HTTP error: ${response.status}`);
+				}
+				return response.json();
+			})
+			.then((json) => setGalleries(json.data))
+			.catch((err) => console.error(`Fetch problem: ${err.message}`));
+	}
 
 	return (
 		<div>
-			<nav>
-				<ul className="pagination pagination-sm justify-content-center">
-					<button
-						className="page-item page-link button-pagination"
-						disabled={pageNo < 1}
-						onClick={() => dispatch(changePage(-1))}
-					>
-						&laquo;
-					</button>
-					<p className="button-pagination page-item page-link">{pageNo}</p>
-					<button
-						className="page-item page-link button-pagination"
-						disabled={!hasNext}
-						onClick={() => dispatch(changePage(1))}
-					>
-						&raquo;{" "}
-					</button>
+			{galleries?.length ? (
+				<ul>
+					{galleries.map((g) => (
+						<GalleryRow key={g.id} gallery={g} />
+					))}
 				</ul>
-			</nav>
+			) : (
+				<div>
+					<button className="btn" onClick={loadMoreItems}>
+						Load more
+					</button>
+				</div>
+			)}
 		</div>
 	);
 }

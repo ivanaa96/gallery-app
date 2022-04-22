@@ -24,6 +24,7 @@ export const gallerySlice = createSlice({
 		myGalleries: [],
 		AuthorsGalleries: [],
 		commentErrors: "",
+		linksForPagination: [],
 	},
 	reducers: {
 		setGalleries(state, { payload }) {
@@ -64,6 +65,9 @@ export const gallerySlice = createSlice({
 		deleteGallery: (state) => {
 			state.gallery = {};
 		},
+		setLinks: (state, action) => {
+			state.linksForPagination = action.payload;
+		},
 		...MiddlewareAction,
 	},
 });
@@ -90,6 +94,8 @@ export const {
 	deleteGalleryMethod,
 	deleteGallery,
 	updateGalleryMethod,
+	getLinksForPagination,
+	setLinks,
 } = gallerySlice.actions;
 
 export default gallerySlice.reducer;
