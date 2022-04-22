@@ -81,6 +81,32 @@ function CreateNewGalleryPage() {
 		history.push("/my-galleries");
 	};
 
+	const reorderList = (event, originalUrlList) => {
+		const movedItem = originalUrlList.find(
+			(item, index) => index === event.oldIndex
+		);
+		const remainingItems = originalUrlList.filter(
+			(item, index) => index !== event.oldIndex
+		);
+
+		const reorderedItems = [
+			...remainingItems.slice(0, event.newIndex),
+			movedItem,
+			...remainingItems.slice(event.newIndex),
+		];
+
+		return reorderedItems;
+	};
+
+	function changeOrder(index, direction) {
+		setUrlList(
+			reorderList(
+				{ oldIndex: index, newIndex: index + (direction === "UP" ? -1 : 1) },
+				urlList
+			)
+		);
+	}
+
 	return (
 		<div>
 			<h2 className="title">
@@ -130,6 +156,33 @@ function CreateNewGalleryPage() {
 							value={urlElement.url}
 							onChange={(e) => handleUrlChange(index, e)}
 						/>
+
+						{urlList.length > 1 && (
+							<div>
+								<button
+									type="button"
+									className="btn"
+									onClick={() => removeInputField(index)}
+								>
+									Remove URL
+								</button>
+								<button
+									type="button"
+									className="btn"
+									onClick={() => changeOrder(index, "UP")}
+								>
+									Move Up
+								</button>
+								<button
+									type="button"
+									className="btn"
+									onClick={() => changeOrder(index, "DOWN")}
+								>
+									Move Down
+								</button>
+							</div>
+						)}
+
 						{urlList.length - 1 === index && (
 							<button
 								type="button"
@@ -139,20 +192,12 @@ function CreateNewGalleryPage() {
 								Add new url
 							</button>
 						)}
-						{urlList.length > 1 && (
-							<button
-								type="button"
-								className="btn"
-								onClick={() => removeInputField(index)}
-							>
-								Remove URL
-							</button>
-						)}
 					</div>
 				))}
+
 				{id && (
 					<button onClick={handleEdit} className="gallery-form-button">
-						edit
+						Edit
 					</button>
 				)}
 
