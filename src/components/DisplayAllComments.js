@@ -20,10 +20,10 @@ function DisplayAllComments({ gallery }) {
 								<div key={comment.id} className="login-form ">
 									{comment?.user && (
 										<div>
-											<p>Comment by: </p>
-											<i className="result-input">
+											<small>Comment by: </small>
+											<div className="result-input">
 												{comment.user.first_name} {comment.user.last_name}
-											</i>
+											</div>
 										</div>
 									)}
 									<p className="result-input">
