@@ -51,8 +51,6 @@ function ViewGalleryPage() {
 							</button>
 						)}
 
-					<p className="">Created: {formattedDate}</p>
-					<p className="justify-content-center">{gallery.description}</p>
 					{gallery.user && (
 						<Link
 							to={`/authors/${gallery.user.id}`}
@@ -61,6 +59,9 @@ function ViewGalleryPage() {
 							Author: {gallery.user.first_name} {gallery.user.last_name}
 						</Link>
 					)}
+					<p className="">Created: {formattedDate}</p>
+					<p className="justify-content-center">{gallery.description}</p>
+
 					<div
 						id="carouselExampleControls"
 						className="carousel slide"
