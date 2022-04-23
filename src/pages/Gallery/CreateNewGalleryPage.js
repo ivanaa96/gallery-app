@@ -91,7 +91,11 @@ function CreateNewGalleryPage() {
 	}, [id]);
 
 	const handleRedirectToHomepage = () => {
-		history.push("/my-galleries");
+		if (id) {
+			history.replace(`/galleries/${id}`);
+		} else {
+			history.push("/my-galleries");
+		}
 	};
 
 	const reorderUrlList = (event, originalUrlList) => {
