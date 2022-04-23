@@ -8,7 +8,6 @@ function GalleryPagination() {
 	const [galleries, setGalleries] = useState([]);
 
 	async function loadMoreItems() {
-		// const test = links[2].url;
 		let num = 1;
 		num++;
 		const link = `http://localhost:8000/api?page=${num}`;
