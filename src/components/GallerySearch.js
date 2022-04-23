@@ -1,45 +1,52 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addSearch } from "../store/gallery/slice";
-import { selectSearch, selectAllGalleries } from "../store/gallery/selectors";
+import { getFilteredGalleries } from "../store/gallery/slice";
+import {
+	selectFilteredGalleries,
+	selectFilter404,
+} from "../store/gallery/selectors";
+import { Link } from "react-router-dom";
+import GalleryRow from "../components/GalleryRow";
+
 function GallerySearch() {
 	const dispatch = useDispatch();
-	const search = useSelector(selectSearch);
-	const galleries = useSelector(selectAllGalleries);
+	const filteredGalleries = useSelector(selectFilteredGalleries);
+	const filter404 = useSelector(selectFilter404);
+	const [query, setQuery] = useState("");
 
-	const filteredGalleries =
-		search &&
-		galleries.filter((gallery) =>
-			gallery.title.toLowerCase().includes(search.toLowerCase())
-		);
+	const handleFilter = async (event) => {
+		event.preventDefault();
+		dispatch(getFilteredGalleries(query));
+		setQuery("");
+	};
 
 	return (
 		<div className="sidebar">
 			<h5>Search for gallery</h5>
 
 			<input
+				name="query"
 				className="input-sidebar"
 				type="text"
 				placeholder="Search.."
-				onChange={(e) => {
-					dispatch(addSearch(e.target.value));
-				}}
+				value={query}
+				onChange={({ target }) => setQuery(target.value)}
 			/>
 			<div>
-				<button className="btn btn-sidebar">Filter</button>
+				<button onClick={handleFilter} className="btn btn-sidebar">
+					Filter
+				</button>
 			</div>
 
 			{filteredGalleries.length
 				? filteredGalleries.map((gallery) => (
 						<div key={gallery.id} className="sidebar-results">
-							<li>
-								<a href={gallery.id}>{gallery.title}</a>
-							</li>
+							{/* <GalleryRow key={gallery.id} gallery={gallery} /> */}
+
+							<Link to={`/galleries/${gallery.id}`}>{gallery.title}</Link>
 						</div>
 				  ))
-				: search && (
-						<span className="sidebar-results">There is not such gallery!</span>
-				  )}
+				: filter404 && <span className="sidebar-results">{filter404}</span>}
 		</div>
 	);
 }

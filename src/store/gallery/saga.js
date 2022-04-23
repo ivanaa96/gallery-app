@@ -22,6 +22,9 @@ import {
 	deleteGallery,
 	updateGalleryMethod,
 	setLinks,
+	getFilteredGalleries,
+	setFilterGalleries,
+	setFilter404,
 } from "./slice";
 
 function* handleCreateGallery(action) {
@@ -39,11 +42,25 @@ function* handleCreateGallery(action) {
 	}
 }
 
-function* getGalleriesHandler({ payload }) {
+function* getGalleriesHandler() {
 	try {
-		const data = yield call(GalleryService.getAll, payload); // ova metoda u servisu treba da prima filter, pa ako on postoji, da ga ubaci u q param
+		const data = yield call(GalleryService.getAll);
 		yield put(setGalleries(data.data));
 		yield put(setLinks(data.links));
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+function* getGalleriesByFilterHandler({ payload }) {
+	try {
+		const data = yield call(GalleryService.getByFilter, payload);
+		if (Array.isArray(data) && data.length === 0) {
+			const message = "We're sorry. We were not able to find a match.";
+			yield put(setFilter404(message));
+		} else {
+			yield put(setFilterGalleries(data));
+		}
 	} catch (error) {
 		console.log(error);
 	}
@@ -90,7 +107,7 @@ function* deleteCommentHandler(action) {
 		"Are you sure you want to delete this comment ?\n Enter 'Yes' if you are"
 	);
 
-	if (response === "Yes") {
+	if (response.toLowerCase() === "yes") {
 		try {
 			const data = yield call(CommentService.delete, action.payload);
 			yield put(deleteCommentFromGallery(data));
@@ -105,7 +122,7 @@ function* deleteGalleryHandler(action) {
 		"Are you sure you want to delete this gallery ?\n Enter 'Yes' if you are"
 	);
 
-	if (response === "Yes") {
+	if (response.toLowerCase() === "yes") {
 		try {
 			yield call(GalleryService.delete, action.payload);
 			yield put(deleteGallery());
@@ -117,7 +134,6 @@ function* deleteGalleryHandler(action) {
 
 function* updateGalleryHandler(action) {
 	try {
-		console.log(action.payload);
 		const data = yield call(GalleryService.edit, action.payload.galleryData);
 		if (
 			action.payload.ifSuccessful.meta &&
@@ -144,4 +160,5 @@ export function* watchForSaga() {
 	yield takeLatest(deleteComment.type, deleteCommentHandler);
 	yield takeLatest(deleteGalleryMethod.type, deleteGalleryHandler);
 	yield takeLatest(updateGalleryMethod.type, updateGalleryHandler);
+	yield takeLatest(getFilteredGalleries.type, getGalleriesByFilterHandler);
 }

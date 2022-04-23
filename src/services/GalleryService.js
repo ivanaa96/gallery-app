@@ -1,7 +1,7 @@
 import HttpService from "./HttpService";
 
 class GalleryService extends HttpService {
-	getAll = async (payload) => {
+	getAll = async () => {
 		const token = localStorage.getItem("token");
 		const { data } = await this.client.get("/", {
 			headers: {
@@ -9,8 +9,16 @@ class GalleryService extends HttpService {
 				"Access-Control-Allow-Origin": true,
 			},
 		});
-		const realData = data.data;
+		const realData = { data: data.data, links: data.links };
 		return realData;
+	};
+
+	getByFilter = async (payload) => {
+		const { data } = await this.client.get(
+			`/galleries?filter=${payload}`,
+			payload
+		);
+		return data.data;
 	};
 
 	get = async (id) => {

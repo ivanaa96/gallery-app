@@ -10,37 +10,32 @@ const MiddlewareAction = {
 	deleteComment: () => {},
 	deleteGalleryMethod: () => {},
 	updateGalleryMethod: () => {},
+	getFilteredGalleries: () => {},
 };
 
 export const gallerySlice = createSlice({
 	name: "gallery",
 	initialState: {
 		galleries: [],
-		search: "",
 		pageNo: 1,
-		sortBy: null,
 		createGalleryErrors: [],
 		gallery: {},
 		myGalleries: [],
 		AuthorsGalleries: [],
 		commentErrors: "",
 		linksForPagination: [],
+		filterGalleries: [],
+		filter404: [],
 	},
 	reducers: {
 		setGalleries(state, { payload }) {
 			state.galleries = payload;
-		},
-		addSearch: (state, action) => {
-			state.search = action.payload;
 		},
 		loadMoreGalleries: (state) => {
 			state.pageNo += 1;
 		},
 		setCreateGalleryErrors(state, { payload }) {
 			state.createGalleryErrors = payload;
-		},
-		setSort: (state, action) => {
-			state.sortBy = action.payload;
 		},
 		setGallery: (state, action) => {
 			state.gallery = action.payload;
@@ -68,18 +63,22 @@ export const gallerySlice = createSlice({
 		setLinks: (state, action) => {
 			state.linksForPagination = action.payload;
 		},
+		setFilterGalleries: (state, { payload }) => {
+			state.filterGalleries = payload;
+		},
+		setFilter404: (state, { payload }) => {
+			state.filter404 = payload;
+		},
 		...MiddlewareAction,
 	},
 });
 
 export const {
 	setGalleries,
-	addSearch,
 	loadMoreGalleries,
 	createGallery,
 	setCreateGalleryErrors,
 	getGalleries,
-	setSort,
 	getGallery,
 	setGallery,
 	createComments,
@@ -96,6 +95,9 @@ export const {
 	updateGalleryMethod,
 	getLinksForPagination,
 	setLinks,
+	setFilterGalleries,
+	getFilteredGalleries,
+	setFilter404,
 } = gallerySlice.actions;
 
 export default gallerySlice.reducer;

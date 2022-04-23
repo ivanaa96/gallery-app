@@ -1,5 +1,3 @@
-export const selectSearch = (state) => state.gallery.search;
-
 export const selectCreateGalleryErrors = (state) =>
 	state.gallery.createGalleryErrors;
 
@@ -15,3 +13,7 @@ export const selectCommentErrors = (state) => state.gallery.commentErrors;
 
 export const selectLinksForPagination = (state) =>
 	state.gallery.linksForPagination;
+
+export const selectFilteredGalleries = (state) => state.gallery.filterGalleries;
+
+export const selectFilter404 = (state) => state.gallery.filter404;
