@@ -72,7 +72,7 @@ function ViewGalleryPage() {
 								{gallery.images &&
 									gallery.images.map((image, i) => (
 										<div key={image.id} className="carousel-image">
-											<a href={image.url}>
+											<a href={image.url} target="_blank">
 												<img
 													src={image.url}
 													alt={image.title}
