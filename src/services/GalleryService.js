@@ -9,7 +9,7 @@ class GalleryService extends HttpService {
 				"Access-Control-Allow-Origin": true,
 			},
 		});
-		const realData = { data: data.data, links: data.links };
+		const realData = { data: data.data, lastPage: data.last_page };
 		return realData;
 	};
 

@@ -11,8 +11,7 @@ export const selectAuthorsGalleries = (state) => state.gallery.AuthorsGalleries;
 
 export const selectCommentErrors = (state) => state.gallery.commentErrors;
 
-export const selectLinksForPagination = (state) =>
-	state.gallery.linksForPagination;
+export const selectLastPage = (state) => state.gallery.lastPage + 1;
 
 export const selectFilteredGalleries = (state) => state.gallery.filterGalleries;
 

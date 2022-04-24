@@ -23,16 +23,13 @@ export const gallerySlice = createSlice({
 		myGalleries: [],
 		AuthorsGalleries: [],
 		commentErrors: "",
-		linksForPagination: [],
+		lastPage: 1,
 		filterGalleries: [],
 		filter404: [],
 	},
 	reducers: {
 		setGalleries(state, { payload }) {
 			state.galleries = payload;
-		},
-		loadMoreGalleries: (state) => {
-			state.pageNo += 1;
 		},
 		setCreateGalleryErrors(state, { payload }) {
 			state.createGalleryErrors = payload;
@@ -60,8 +57,8 @@ export const gallerySlice = createSlice({
 		deleteGallery: (state) => {
 			state.gallery = {};
 		},
-		setLinks: (state, action) => {
-			state.linksForPagination = action.payload;
+		setLastPage: (state, action) => {
+			state.lastPage = action.payload;
 		},
 		setFilterGalleries: (state, { payload }) => {
 			state.filterGalleries = payload;
@@ -75,7 +72,6 @@ export const gallerySlice = createSlice({
 
 export const {
 	setGalleries,
-	loadMoreGalleries,
 	createGallery,
 	setCreateGalleryErrors,
 	getGalleries,
@@ -93,8 +89,7 @@ export const {
 	deleteGalleryMethod,
 	deleteGallery,
 	updateGalleryMethod,
-	getLinksForPagination,
-	setLinks,
+	setLastPage,
 	setFilterGalleries,
 	getFilteredGalleries,
 	setFilter404,
