@@ -47,7 +47,7 @@ function CreateNewGalleryPage() {
 				image_urls: urlList,
 				meta: {
 					onSuccess: () => {
-						history.replace("/");
+						history.replace("/my-galleries");
 					},
 				},
 			})
@@ -206,20 +206,22 @@ function CreateNewGalleryPage() {
 								className="btn"
 								onClick={handleAddInputField}
 							>
-								Add new url
+								Add another URL
 							</button>
 						)}
 					</div>
 				))}
 
-				{id && (
+				{id ? (
 					<button onClick={handleEdit} className="gallery-form-button">
 						Edit
 					</button>
+				) : (
+					<button className="gallery-form-button">Submit</button>
 				)}
 
-				<button className="gallery-form-button">Submit</button>
 				<br />
+
 				<button
 					onClick={handleRedirectToHomepage}
 					className="gallery-form-button"
