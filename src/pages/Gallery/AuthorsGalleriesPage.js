@@ -40,9 +40,11 @@ function AuthorsGalleriesPage() {
 					))}
 				</ul>
 			)}
-			<div>
-				<GalleryPagination />
-			</div>
+			{galleries?.length > 10 && (
+				<div>
+					<GalleryPagination />
+				</div>
+			)}
 		</div>
 	);
 }
