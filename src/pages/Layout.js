@@ -1,11 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import Navbar from "../components/Navbar";
-import {
-	BrowserRouter as Router,
-	Switch,
-	Route,
-	Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
