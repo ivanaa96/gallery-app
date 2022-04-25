@@ -25,6 +25,8 @@ import {
 	getFilteredGalleries,
 	setFilterGalleries,
 	setFilter404,
+	setNextPageUrl,
+	changeNextPageUrl,
 } from "./slice";
 
 function* handleCreateGallery(action) {
@@ -47,6 +49,7 @@ function* getGalleriesHandler() {
 		const data = yield call(GalleryService.getAll);
 		yield put(setGalleries(data.data));
 		yield put(setLastPage(data.lastPage));
+		yield put(setNextPageUrl(data.nextUrl));
 	} catch (error) {
 		console.log(error);
 	}
@@ -150,6 +153,15 @@ function* updateGalleryHandler(action) {
 	}
 }
 
+function* updateNextPageUrl(action) {
+	try {
+		const data = yield put(setNextPageUrl(action.payload));
+		return data;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
 export function* watchForSaga() {
 	yield takeLatest(createGallery.type, handleCreateGallery);
 	yield takeLatest(getGalleries.type, getGalleriesHandler);
@@ -161,4 +173,5 @@ export function* watchForSaga() {
 	yield takeLatest(deleteGalleryMethod.type, deleteGalleryHandler);
 	yield takeLatest(updateGalleryMethod.type, updateGalleryHandler);
 	yield takeLatest(getFilteredGalleries.type, getGalleriesByFilterHandler);
+	yield takeLatest(changeNextPageUrl.type, updateNextPageUrl);
 }

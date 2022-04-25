@@ -13,8 +13,6 @@ function GallerySearch() {
 	const filter404 = useSelector(selectFilter404);
 	const [query, setQuery] = useState("");
 
-	console.log(filter404);
-
 	const handleFilter = async (event) => {
 		event.preventDefault();
 		dispatch(getFilteredGalleries(query));

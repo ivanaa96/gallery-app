@@ -16,3 +16,5 @@ export const selectLastPage = (state) => state.gallery.lastPage + 1;
 export const selectFilteredGalleries = (state) => state.gallery.filterGalleries;
 
 export const selectFilter404 = (state) => state.gallery.filter404;
+
+export const selectNextPageUrl = (state) => state.gallery.nextPageUrl;

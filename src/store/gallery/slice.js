@@ -11,6 +11,7 @@ const MiddlewareAction = {
 	deleteGalleryMethod: () => {},
 	updateGalleryMethod: () => {},
 	getFilteredGalleries: () => {},
+	changeNextPageUrl: () => {},
 };
 
 export const gallerySlice = createSlice({
@@ -26,6 +27,7 @@ export const gallerySlice = createSlice({
 		lastPage: 1,
 		filterGalleries: [],
 		filter404: "",
+		nextPageUrl: "",
 	},
 	reducers: {
 		setGalleries(state, { payload }) {
@@ -66,6 +68,9 @@ export const gallerySlice = createSlice({
 		setFilter404: (state, { payload }) => {
 			state.filter404 = payload;
 		},
+		setNextPageUrl: (state, action) => {
+			state.nextPageUrl = action.payload;
+		},
 		...MiddlewareAction,
 	},
 });
@@ -93,6 +98,8 @@ export const {
 	setFilterGalleries,
 	getFilteredGalleries,
 	setFilter404,
+	setNextPageUrl,
+	changeNextPageUrl,
 } = gallerySlice.actions;
 
 export default gallerySlice.reducer;
