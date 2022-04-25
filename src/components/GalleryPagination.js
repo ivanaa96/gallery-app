@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectLastPage, selectNextPageUrl } from "../store/gallery/selectors";
+import { selectNextPageUrl } from "../store/gallery/selectors";
 import GalleryRow from "./GalleryRow";
 import { changeNextPageUrl } from "../store/gallery/slice";
 
 function GalleryPagination() {
 	const dispatch = useDispatch();
 	const [galleries, setGalleries] = useState([]);
-	const lastPage = useSelector(selectLastPage);
 	const nextPageUrl = useSelector(selectNextPageUrl);
 
 	async function loadMoreItems() {

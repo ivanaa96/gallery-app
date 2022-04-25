@@ -12,7 +12,6 @@ class GalleryService extends HttpService {
 
 		const realData = {
 			data: data.data,
-			lastPage: data.last_page,
 			nextUrl: data.next_page_url,
 		};
 		return realData;

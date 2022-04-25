@@ -24,7 +24,6 @@ export const gallerySlice = createSlice({
 		myGalleries: [],
 		AuthorsGalleries: [],
 		commentErrors: "",
-		lastPage: 1,
 		filterGalleries: [],
 		filter404: "",
 		nextPageUrl: "",
@@ -59,9 +58,6 @@ export const gallerySlice = createSlice({
 		deleteGallery: (state) => {
 			state.gallery = {};
 		},
-		setLastPage: (state, action) => {
-			state.lastPage = action.payload;
-		},
 		setFilterGalleries: (state, { payload }) => {
 			state.filterGalleries = payload;
 		},
@@ -94,7 +90,6 @@ export const {
 	deleteGalleryMethod,
 	deleteGallery,
 	updateGalleryMethod,
-	setLastPage,
 	setFilterGalleries,
 	getFilteredGalleries,
 	setFilter404,

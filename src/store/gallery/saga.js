@@ -21,7 +21,6 @@ import {
 	deleteGalleryMethod,
 	deleteGallery,
 	updateGalleryMethod,
-	setLastPage,
 	getFilteredGalleries,
 	setFilterGalleries,
 	setFilter404,
@@ -48,7 +47,6 @@ function* getGalleriesHandler() {
 	try {
 		const data = yield call(GalleryService.getAll);
 		yield put(setGalleries(data.data));
-		yield put(setLastPage(data.lastPage));
 		yield put(setNextPageUrl(data.nextUrl));
 	} catch (error) {
 		console.log(error);

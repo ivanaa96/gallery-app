@@ -33,9 +33,9 @@ function Layout() {
 						<AuthorsGalleriesPage />
 					</PrivateRoute>
 
-					<PrivateRoute path="/galleries/:id">
+					<Route path="/galleries/:id">
 						<ViewGalleryPage />
-					</PrivateRoute>
+					</Route>
 
 					<PrivateRoute path="/create">
 						<CreateNewGalleryPage />
