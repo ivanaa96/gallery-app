@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getFilteredGalleries } from "../store/gallery/slice";
 import {
@@ -6,13 +6,14 @@ import {
 	selectFilter404,
 } from "../store/gallery/selectors";
 import { Link } from "react-router-dom";
-import GalleryRow from "../components/GalleryRow";
 
 function GallerySearch() {
 	const dispatch = useDispatch();
 	const filteredGalleries = useSelector(selectFilteredGalleries);
 	const filter404 = useSelector(selectFilter404);
 	const [query, setQuery] = useState("");
+
+	console.log(filter404);
 
 	const handleFilter = async (event) => {
 		event.preventDefault();
@@ -38,15 +39,16 @@ function GallerySearch() {
 				</button>
 			</div>
 
-			{filteredGalleries.length
-				? filteredGalleries.map((gallery) => (
-						<div key={gallery.id} className="sidebar-results">
-							{/* <GalleryRow key={gallery.id} gallery={gallery} /> */}
+			{filteredGalleries.length &&
+				filteredGalleries.map((gallery) => (
+					<div key={gallery.id} className="sidebar-results">
+						<Link to={`/galleries/${gallery.id}`}>{gallery.title}</Link>
+					</div>
+				))}
 
-							<Link to={`/galleries/${gallery.id}`}>{gallery.title}</Link>
-						</div>
-				  ))
-				: filter404 && <span className="sidebar-results">{filter404}</span>}
+			{filter404 !== "" ? (
+				<span className="sidebar-results">{filter404}</span>
+			) : null}
 		</div>
 	);
 }

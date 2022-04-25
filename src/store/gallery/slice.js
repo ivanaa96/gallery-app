@@ -25,7 +25,7 @@ export const gallerySlice = createSlice({
 		commentErrors: "",
 		lastPage: 1,
 		filterGalleries: [],
-		filter404: [],
+		filter404: "",
 	},
 	reducers: {
 		setGalleries(state, { payload }) {

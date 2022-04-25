@@ -82,7 +82,6 @@ function CreateNewGalleryPage() {
 		const getGallery = async () => {
 			const { id: _, ...restData } = await GalleryService.get(id);
 			setNewGallery({ ...restData });
-			setUrlList([...restData.images]);
 		};
 
 		if (id) {
